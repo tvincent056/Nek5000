@@ -82,8 +82,10 @@ c
       character*40    turbmod
       equivalence    (turbmod,textsw(1,1))
 
-      character*132   reafle,fldfle,dmpfle,hisfle,schfle,orefle,nrefle
-      common /cfiles/ reafle,fldfle,dmpfle,hisfle,schfle,orefle,nrefle
+      character*132   reafle,fldfle,dmpfle,hisfle,hsofle,hstfle
+     $               ,schfle,orefle,nrefle
+      common /cfiles/ reafle,fldfle,dmpfle,hisfle,hsofle,hstfle
+     $               ,schfle,orefle,nrefle
 
       character*132   session,path,re2fle,parfle,amgfile
       common /cfile2/ session,path,re2fle,parfle,amgfile

@@ -1657,14 +1657,30 @@ c-----------------------------------------------------------------------
         write(6,*) 'reading history points'
         open(50,file=hisfle,status='old',err=100)
         read(50,*,err=100) npoints
-        goto 101
+        open(51,file=hstfle,status='new',err=101)
+        open(52,file=hsofle,form='unformatted',status='new',err=102)
+        goto 110
  100    ierr = 1
- 101    continue
+        goto 110
+ 101    ierr = 2
+        goto 110
+ 102    ierr = 3
+ 110    continue
       endif
       ierr=iglsum(ierr,1)
       if(ierr.gt.0) then
-        if(nio.eq.0) 
-     &   write(6,*) 'Cannot open history file in subroutine hpts()'
+        if(nio.eq.0) then
+          if(ierr.eq.1) 
+     &     write(6,*) 'Cannot open history file in subroutine hpts()'
+          if(ierr.eq.2) then
+            write(6,*) 'Cannot open hso file in subroutine hpts()'
+            write(6,*) 'hso file = ', hsofle
+          endif
+          if(ierr.eq.3) then
+            write(6,*) 'Cannot open hst file in subroutine hpts()'
+            write(6,*) 'hst file = ', hstfle
+          endif
+        endif
         call exitt
       endif
       
@@ -1790,12 +1806,19 @@ c-----------------------------------------------------------------------
 
         call nekgsync
 
+        if(ipass.eq.1) then
+          if(nid.eq.0) then
+            write(51,'(1p20E15.7)') time
+          endif
+        endif
+
         if(ipass.lt.npass) then
           if(nid.eq.0) then
             call crecv(ipass,buf,len)
             do ip = 1,nbuff
-              write(50,'(1p20E15.7)') time,
-     &         (buf(i,ip), i=1,nflds)
+c              write(50,'(1p20E15.7)') time,
+c     &         (buf(i,ip), i=1,nflds)
+              write(52) (buf(i,ip), i=1,nflds)
             enddo
           elseif(nid.eq.ipass) then
             call csend(ipass,fieldout,len,0,nid)
@@ -1805,8 +1828,9 @@ c-----------------------------------------------------------------------
 
           if(nid.eq.0) then
             do ip = 1,il
-              write(50,'(1p20E15.7)') time,
-     &         (fieldout(i,ip), i=1,nflds)
+c              write(50,'(1p20E15.7)') time,
+c     &         (fieldout(i,ip), i=1,nflds)
+              write(52) (fieldout(i,ip), i=1,nflds)
             enddo
           endif
 
