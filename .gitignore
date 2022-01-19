@@ -21,3 +21,4 @@ bin/re2torea
 bin/reatore2
 
 __pycache__
+.vscode/
