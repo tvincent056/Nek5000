@@ -1322,7 +1322,7 @@ c
                      call rzero(rbc3,5)
                      rbc8(3) = 0.0
                   endif
-                  if (cbc5.ne.'E  ') nbc = nbc + 1
+                  if (cbc3.ne.'E  ') nbc = nbc + 1
                else
                   cbc3='E  '
                endif
