@@ -172,7 +172,7 @@ if ! which X >/dev/null; then
 fi
 
 #LIST=`ls -Cd */ | sed 's:\/::g'`
-LIST="genmap gencon genbox n2to3 reatore2 nekmerge prenek postnek nekamg_setup gmsh2nek exo2nek cgns2nek"
+LIST="genmap gencon genbox n2to3 reatore2 nekmerge prenek postnek nekamg_setup gmsh2nek exo2nek cgns2nek n2to3co2"
 export LIST
 
 rm -rf build.log
@@ -203,6 +203,9 @@ else
      export CFLAGS="${NEK_CFLAGS}"
      export CFLAGS+=" ${US}"
      export CFLAGS+=" ${BIGMEM}"
+     if [ "$TOOL" == "cgns2nek" ]; then
+        export FFLAGS+=" -fallow-argument-mismatch"
+     fi
      if [ "$TOOL" == "exo2nek" ]; then
         export FFLAGS+=" ${R8}"
      fi
@@ -223,6 +226,9 @@ else
      fi
      if [ "$TOOL" == "prenek" ]; then
         export CFLAGS+=" -Dr8"
+     fi
+     if [ "$TOOL" == "n2to3co2" ]; then 
+        export FFLAGS+=" ${R8}"
      fi
      printf "building $TOOL ... "
 
