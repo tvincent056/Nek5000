@@ -306,7 +306,7 @@ C     Laplacian formulation only
      $ or Z axis detected for'
 
  9999 WRITE (6,*) ' Element',ieg,'   side',IFC
-      WRITE (6,*) ' Requires PN/PN-2 STRESS FORMULATION'
+      WRITE (6,*) ' Requires STRESS FORMULATION'
 
       ierr = err + 1
 
@@ -2180,6 +2180,52 @@ c
         enddo
         enddo
       endif
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine setbcpar 
+
+      include 'SIZE'
+      include 'INPUT'
+      include 'GEOM'
+
+      integer ifld,iel,ifc,bid,ibd,nobc(lbid),wk(lbid),ierr
+      integer iglsum
+
+      ierr = 0
+
+      do ifld = 1,ldimt1
+        if(ifbmap(ifld))then 
+          call izero(nobc,lbid)
+          do iel = 1,nelt
+          do ifc = 1,2*ndim
+            bid = BoundaryID(ifc,iel)
+            if(iftmsh(ifld)) bid = BoundaryIDt(ifc,iel)
+            if(bid.ge.1) then
+              do ibd = 1,nbctype
+                if(bid.eq.cbc_imap(ibd)) then
+                  cbc(ifc,iel,ifld)=cbc_bmap(ibd,ifld)
+                  nobc(ibd)=1
+                endif
+                if(cbc_bmap(ibd,ifld).eq.'   ') nobc(ibd)=1 !allow extra empty BCs
+              enddo
+            endif 
+          enddo
+          enddo
+          call igop(nobc,wk,'+  ',nbctype)
+          do ibd=1,nbctype
+            if(nobc(ibd).eq.0) then
+              if(nio.eq.0) write(*,'(a,i4,a)')
+     &         "ERROR: Boundary ID ",cbc_imap(ibd)," not found in mesh!"
+              ierr=1 !check all the IDs instead of just quitting now
+            endif
+          enddo
+        endif
+      enddo
+
+      ierr=iglsum(ierr,1) !I don t think this is necessary
+      if(ierr.gt.0) call exitt
 
       return
       end
