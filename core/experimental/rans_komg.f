@@ -282,8 +282,8 @@ c set cbc array for k and omega/tau (need to revise for wall-functions)
       do 10 ie = 1,nelv
       do 10 ifc = 1,2*ndim
         bcw=cbc(ifc,ie,1)
-        cbc(ifc,ie,ifld_k)=bcw
-        cbc(ifc,ie,ifld_omega)=bcw
+c        cbc(ifc,ie,ifld_k)=bcw
+c        cbc(ifc,ie,ifld_omega)=bcw
         if(bcw.eq.'W  '.or.bcw.eq.'v  ') then
           cbc(ifc,ie,ifld_k)='t  '
           cbc(ifc,ie,ifld_omega)='t  '
