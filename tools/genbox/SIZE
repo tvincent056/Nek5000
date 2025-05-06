@@ -1,4 +1,4 @@
-      parameter (mbox  = 10)            ! Max number of Boxes in .box file
+      parameter (mbox  = 20)            ! Max number of Boxes in .box file
       parameter (maxx  = 1000)          ! Max elements in one direction
       parameter (maxel = MAXNEL)        ! Max Total Elements 
 
