@@ -176,6 +176,7 @@ C
       ifstrs    = .false. 
       iflomach  = .false. 
       ifmvbd    = .false.
+      ifimmvbd  = .false. ! default to explicit moving boundary
       ifchar    = .false.  
       ifmhd     = .false. 
       ifuservp  = .false.  

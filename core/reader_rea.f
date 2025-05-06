@@ -129,6 +129,7 @@ C
       IFMODEL   = .false.
       IFKEPS    = .false.
       IFMVBD    = .false.
+      IFIMMVBD  = .false.  ! default to explicit moving boundary
       IFCHAR    = .false.
       IFDG      = .false.
       IFANLS    = .false.

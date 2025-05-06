@@ -869,6 +869,8 @@ C
          CALL COPY (UX,WX,NTOT1)
          CALL COPY (UY,WY,NTOT1)
          IF (ldim.EQ.3) CALL COPY (UZ,WZ,NTOT1)
+      else if (ifimmvbd) then
+         CALL usrupdxyz(ux,uy,uz,ntot1)
       else
          if (ifrich) then
             call cmult2(ux,wx,dt,ntot1)
